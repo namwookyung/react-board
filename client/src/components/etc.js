@@ -3,6 +3,7 @@ import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 
 function etc() {
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   const [addContent, setAddContent] = useState({
     postIdx: "",
     postTitle: "",
