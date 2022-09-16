@@ -38,6 +38,11 @@ function etc() {
         onChange={(event, editor) => {
           const data = editor.getData();
           console.log({ event, editor, data });
+          setAddContent({
+            ...addContent,
+            content: data,
+          });
+          console.log(addContent);
         }}
         onBlur={(event, editor) => {
           console.log("Blur.", editor);
