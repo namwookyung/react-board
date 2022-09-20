@@ -1,19 +1,24 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./PostAdd.css";
+import "./PopupController";
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "@ckeditor/ckeditor5-build-classic";
 import Axios from "axios";
 
 function PostAdd() {
   const [addContent, setAddContent] = useState({
-    postIdx: "",
     postTitle: "",
     postContent: "",
-    postDate: "",
+  });
+
+  useEffect(() => {
+    Axios.get("http://localhost:8000/api/get").then((response) => {
+      console.log(response);
+    });
   });
 
   const submitPost = () => {
-    Axios.post("/api/insert", {
+    Axios.post("http://localhost:8000/api/insert", {
       postTitle: addContent.postTitle,
       postContent: addContent.postTitle,
     }).then(() => {
