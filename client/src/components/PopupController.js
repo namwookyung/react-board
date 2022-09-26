@@ -14,7 +14,7 @@ class PopupController extends Component {
   }
 
   componentDidMount() {
-    axios.get("/post_item").then((res) => {
+    axios.get("/api/postAdd").then((res) => {
       this.setState({ postList: res.data.rs_value.rows });
     });
   }

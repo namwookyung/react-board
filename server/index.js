@@ -1,17 +1,13 @@
 const express = require("express");
-const app = express();
+const router = express.Router();
 const mysql = require("mysql");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const { urlencoded } = require("body-parser");
 
-const PORT = process.env.port || 8000;
+const PORT = process.env.port || 4000;
 
-app.listen(PORT, () => {
-  console.log(`http://localhost:${PORT}`);
-});
-
-const db = mysql.createPool({
+const db = mysql.createConnection({
   host: "localhost",
   user: "root",
   password: "nwk951207@",
@@ -24,27 +20,38 @@ exports.getConnectionPool = (callback) => {
   });
 };
 
-app.use(cors());
-app.use(express.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+router.use(cors());
+router.use(express.json());
+router.use(bodyParser.urlencoded({ extended: true }));
 
-app.get("/", (req, res) => {
-  res.send("connect!");
+router.get("/", (req, res) => {
+  res.send("localhost:4000 -> connect");
 });
 
-app.get("/api/get", (req, res) => {
+router.get("/api", (req, res) => {
+  res.send("localhost:4000/api -> connect");
+});
+
+router.get("/api/get", (req, res) => {
   db.query("SELECT * FROM post", (err, rows, fields) => {
     if (err) throw err;
     res.send(rows);
   });
 });
 
-app.post("/api/insert", (req, res) => {
+router.post("/api/insert", (req, res) => {
   const postTitle = req.body.postTitle;
   const postContent = req.body.postContent;
-  const sqlQuery =
-    "insert to post (postTitle, postContent) values ('asdfa?', 'asdfsdf?')";
-  db.query(sqlQuery, [postTitle, postContent], (err, result) => {
-    res.send("-----success-----");
-  });
+  db.query(
+    "INSERT INTO post (postTitle, postContent) values (?, ?)",
+    [postTitle, postContent],
+    (err, rows, fields) => {
+      if (err) {
+        console.log(err);
+      } else {
+        console.log(rows);
+        res.send("localhost:4000/api/insert -> connect");
+      }
+    }
+  );
 });
